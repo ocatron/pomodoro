@@ -1,4 +1,4 @@
-import { defineConfig,  } from "@vite-pwa/assets-generator/config";
+import { defineConfig } from "@vite-pwa/assets-generator/config";
 
 export default defineConfig({
   preset: {
@@ -9,16 +9,14 @@ export default defineConfig({
     },
     maskable: {
       sizes: [512],
-      resizeOptions: { background: "#f43f5e" },
+      resizeOptions: { background: "#dc2626" },
       padding: 0,
     },
     apple: {
       sizes: [180],
-      resizeOptions: { background: "#f43f5e" },
+      resizeOptions: { background: "#dc2626" },
       padding: 0,
     },
   },
-  images: [
-    "public/favicon.svg",
-  ],
+  images: ["public/favicon.svg"],
 });
