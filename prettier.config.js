@@ -9,5 +9,6 @@ export default {
   jsxSingleQuote: false,
   trailingComma: "all",
   tailwindConfig: "./tailwind.config.js",
+  tailwindFunctions: ["cva"],
   plugins: ["prettier-plugin-tailwindcss"],
 };
