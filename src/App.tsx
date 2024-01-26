@@ -1,7 +1,13 @@
 import "./App.css";
+import { MainLayout } from "./components/main-layout";
+import { ThemeProvider } from "./components/theme";
 
 function App() {
-  return <h1 className="">Hello world!</h1>;
+  return (
+    <ThemeProvider>
+      <MainLayout>Hello world!</MainLayout>
+    </ThemeProvider>
+  );
 }
 
 export default App;
