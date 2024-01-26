@@ -3,13 +3,15 @@ import { useTheme } from "../theme";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "../dropdown-menu";
 import { Button } from "../button";
+import { Theme } from "../theme/theme-provider";
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   return (
     <DropdownMenu>
@@ -24,15 +26,20 @@ export function ModeToggle() {
         align="end"
         onCloseAutoFocus={(e) => e.preventDefault()}
       >
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
+        <DropdownMenuRadioGroup
+          value={theme}
+          onValueChange={(newValue) => setTheme(newValue as Theme)}
+        >
+          <DropdownMenuRadioItem indicator="check" value="light">
+            Light
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem indicator="check" value="dark">
+            Dark
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem indicator="check" value="system">
+            System
+          </DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );
