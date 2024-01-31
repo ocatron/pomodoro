@@ -7,7 +7,7 @@ function App() {
   return (
     <ThemeProvider>
       <MainLayout>
-        <Timer className="mt-4"/> 
+        <Timer className="mt-4" />
       </MainLayout>
     </ThemeProvider>
   );
