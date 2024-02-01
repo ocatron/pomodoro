@@ -8,7 +8,6 @@ interface CountdownProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Countdown = React.forwardRef<HTMLDivElement, CountdownProps>(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ className, remainingSeconds, ...props }, ref) => {
     const minutes = pad(secondsToMinutes(remainingSeconds), 2);
     const seconds = pad(remainingSeconds % 60, 2);
