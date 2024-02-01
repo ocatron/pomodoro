@@ -8,7 +8,7 @@ const DEFAULT_LONG_BREAK_MINUTES = 15;
 const DEFAULT_LONG_BREAK_INTERVAL = 4;
 
 export interface PomodoroState {
-  pomodoroCount: number;
+  completedPomodoroCount: number;
   pomodoroMinutes: number;
   shortBreakMinutes: number;
   longBreakMinutes: number;
@@ -25,7 +25,7 @@ export interface PomodoroState {
 }
 
 const usePomodoroStore = create<PomodoroState>()((set) => ({
-  pomodoroCount: 0,
+  completedPomodoroCount: 0,
   pomodoroMinutes: DEFAULT_POMODORO_MINUTES,
   shortBreakMinutes: DEFAULT_SHORT_BREAK_MINUTES,
   longBreakMinutes: DEFAULT_LONG_BREAK_MINUTES,
@@ -35,9 +35,15 @@ const usePomodoroStore = create<PomodoroState>()((set) => ({
     next: () =>
       set((state) => {
         if (state.mode === "long-break" || state.mode === "short-break") {
-          return { mode: "pomodoro", pomodoroCount: state.pomodoroCount + 1 };
+          return {
+            mode: "pomodoro",
+            completedPomodoroCount: state.completedPomodoroCount + 1,
+          };
         }
-        if ((state.pomodoroCount - 1) % state.longBreakInterval === 0) {
+        if (
+          (state.completedPomodoroCount + 1) % state.longBreakInterval ===
+          0
+        ) {
           return { mode: "long-break" };
         }
         return { mode: "short-break" };
@@ -45,15 +51,29 @@ const usePomodoroStore = create<PomodoroState>()((set) => ({
     previous: () =>
       set((state) => {
         if (state.mode === "long-break" || state.mode === "short-break") {
-          return { mode: "pomodoro", pomodoroCount: state.pomodoroCount - 1 };
+          return {
+            mode: "pomodoro",
+          };
         }
-        if ((state.pomodoroCount - 1) % state.longBreakInterval === 0) {
-          return { mode: "long-break" };
+        if (state.completedPomodoroCount - 1 < 0) {
+          return { mode: "pomodoro", completedPomodoroCount: 0 };
         }
-        return { mode: "short-break" };
+        if (state.completedPomodoroCount - 1 === 0) {
+          return { mode: "short-break", completedPomodoroCount: 0 };
+        }
+        if (state.completedPomodoroCount % state.longBreakInterval === 0) {
+          return {
+            mode: "long-break",
+            completedPomodoroCount: state.completedPomodoroCount - 1,
+          };
+        }
+        return {
+          mode: "short-break",
+          completedPomodoroCount: state.completedPomodoroCount - 1,
+        };
       }),
     resetPomodoroCount: () =>
-      set(() => ({ pomodoroCount: 0, mode: "pomodoro" })),
+      set(() => ({ completedPomodoroCount: 0, mode: "pomodoro" })),
     resetToDefaultSettings: () =>
       set(() => ({
         pomodoroMinutes: DEFAULT_POMODORO_MINUTES,
@@ -64,5 +84,25 @@ const usePomodoroStore = create<PomodoroState>()((set) => ({
     setMode: (mode: TimerMode) => set(() => ({ mode })),
   },
 }));
+
+export const useCompletedPomodoroCount = () =>
+  usePomodoroStore((state) => state.completedPomodoroCount);
+
+export const usePomodoroMinutes = () =>
+  usePomodoroStore((state) => state.pomodoroMinutes);
+
+export const useShortBreakMinutes = () =>
+  usePomodoroStore((state) => state.shortBreakMinutes);
+
+export const useLongBreakMinutes = () =>
+  usePomodoroStore((state) => state.longBreakMinutes);
+
+export const useLongBreakInterval = () =>
+  usePomodoroStore((state) => state.longBreakInterval);
+
+export const useTimerMode = () => usePomodoroStore((state) => state.mode);
+
+export const usePomodoroActions = () =>
+  usePomodoroStore((state) => state.actions);
 
 export { usePomodoroStore };
