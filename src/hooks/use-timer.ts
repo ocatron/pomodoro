@@ -87,7 +87,6 @@ export const useTimer = ({
 
   useInterval(
     () => {
-      console.log("Running...");
       if (delay !== DEFAULT_DELAY) {
         setDelay(DEFAULT_DELAY);
       }
