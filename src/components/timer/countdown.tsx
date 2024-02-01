@@ -13,7 +13,7 @@ export const Countdown = React.forwardRef<HTMLDivElement, CountdownProps>(
     const minutes = pad(secondsToMinutes(remainingSeconds), 2);
     const seconds = pad(remainingSeconds % 60, 2);
     return (
-      <div className={cn("text-6xl", className)} ref={ref} {...props}>
+      <div className={cn("font-mono text-6xl", className)} ref={ref} {...props}>
         {`${minutes}:${seconds}`}
       </div>
     );
