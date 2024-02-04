@@ -5,11 +5,16 @@ import {
 } from "@/store/pomodoro-store";
 import React, { useMemo } from "react";
 
-type PomodoroCountProps = React.HTMLAttributes<HTMLDivElement>;
+interface PomodoroCountProps extends React.HTMLAttributes<HTMLDivElement> {
+  didStart: boolean;
+}
 
-export const PomodoroCount = React.forwardRef<HTMLDivElement, PomodoroCountProps>(
+export const PomodoroCount = React.forwardRef<
+  HTMLDivElement,
+  PomodoroCountProps
+>(
   // eslint-disable-next-line react/prop-types
-  ({ className, ...props }, ref) => {
+  ({ className, didStart, ...props }, ref) => {
     const completedPomodoroCount = useCompletedPomodoroCount();
     const timerMode = useTimerMode();
     const currentPomodoro = completedPomodoroCount + 1;
@@ -18,11 +23,11 @@ export const PomodoroCount = React.forwardRef<HTMLDivElement, PomodoroCountProps
       if (timerMode === "short-break" || timerMode === "long-break") {
         return `Completed #${currentPomodoro}`;
       }
-      if (currentPomodoro === 1) {
+      if (currentPomodoro === 1 && !didStart) {
         return `Let's get started...`;
       }
       return `Pomodoro #${currentPomodoro}`;
-    }, [currentPomodoro, timerMode]);
+    }, [currentPomodoro, didStart, timerMode]);
 
     return (
       <div className={cn(className)} ref={ref} {...props}>
