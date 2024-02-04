@@ -28,12 +28,13 @@ export const Timer = React.forwardRef<HTMLDivElement, TimerProps>(
     const timerMode = useTimerMode();
     const pomodoroActions = usePomodoroActions();
 
-    const { totalSeconds, isRunning, pause, resume, restart } = useTimer({
-      expiryTime: addMinutes(new Date(), pomodoroMinutes),
-      autoStart: false,
-    });
+    const { totalSeconds, didStart, isRunning, pause, resume, restart } =
+      useTimer({
+        expiryTime: addMinutes(new Date(), pomodoroMinutes),
+        autoStart: false,
+      });
 
-    useEffect(() => {
+    const resetTimer = useCallback(() => {
       if (timerMode === "pomodoro") {
         restart({
           expiryTime: addMinutes(new Date(), pomodoroMinutes),
@@ -57,6 +58,10 @@ export const Timer = React.forwardRef<HTMLDivElement, TimerProps>(
       shortBreakMinutes,
       timerMode,
     ]);
+
+    useEffect(() => {
+      resetTimer();
+    }, [resetTimer]);
 
     const handleTimerModeChange = useCallback(
       (value: string) => {
@@ -84,8 +89,12 @@ export const Timer = React.forwardRef<HTMLDivElement, TimerProps>(
     }, [pomodoroActions]);
 
     const handlePrevious = useCallback(() => {
-      pomodoroActions.previous();
-    }, [pomodoroActions]);
+      if (didStart) {
+        resetTimer();
+      } else {
+        pomodoroActions.previous();
+      }
+    }, [didStart, pomodoroActions, resetTimer]);
 
     return (
       <div
