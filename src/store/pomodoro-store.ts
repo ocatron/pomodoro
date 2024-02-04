@@ -21,6 +21,10 @@ export interface PomodoroState {
     resetPomodoroCount: () => void;
     resetToDefaultSettings: () => void;
     setMode: (mode: TimerMode) => void;
+    setPomodoroMinutes: (minutes: number) => void;
+    setShortBreakMinutes: (minutes: number) => void;
+    setLongBreakMinutes: (minutes: number) => void;
+    setLongBreakInterval: (pomodoros: number) => void;
   };
 }
 
@@ -82,6 +86,14 @@ const usePomodoroStore = create<PomodoroState>()((set) => ({
         longBreakInterval: DEFAULT_LONG_BREAK_INTERVAL,
       })),
     setMode: (mode: TimerMode) => set(() => ({ mode })),
+    setPomodoroMinutes: (minutes) =>
+      set(() => ({ pomodoroMinutes: minutes <= 0 ? 1 : minutes })),
+    setShortBreakMinutes: (minutes) =>
+      set(() => ({ shortBreakMinutes: minutes <= 0 ? 1 : minutes })),
+    setLongBreakMinutes: (minutes) =>
+      set(() => ({ longBreakMinutes: minutes <= 0 ? 1 : minutes })),
+    setLongBreakInterval: (pomodoros) =>
+      set(() => ({ longBreakInterval: pomodoros <= 0 ? 1 : pomodoros })),
   },
 }));
 
