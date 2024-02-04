@@ -104,7 +104,7 @@ export const Timer = React.forwardRef<HTMLDivElement, TimerProps>(
           </TabsList>
         </Tabs>
         <Countdown remainingSeconds={totalSeconds} className="mt-8" />
-        <PomodoroCount className="mt-8" />
+        <PomodoroCount className="mt-8" didStart={didStart} />
         <ProgressBar remainingSeconds={totalSeconds} className="mt-8" />
         <div className="mt-8 flex items-center justify-center gap-4">
           <Button
