@@ -105,6 +105,7 @@ export const useTimer = ({
     pause,
     resume,
     restart,
+    didStart,
     isRunning,
   };
 };
