@@ -1,6 +1,6 @@
 import { useTimer } from "@/hooks/use-timer";
 import { cn } from "@/lib/ui-utils";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { Countdown } from "./countdown";
 import { addMinutes } from "date-fns";
 import { Tabs, TabsList, TabsTrigger } from "../tabs";
@@ -11,9 +11,10 @@ import {
   usePomodoroMinutes,
   useShortBreakMinutes,
   useLongBreakMinutes,
+  useCompletedPomodoroCount,
 } from "@/store/pomodoro-store";
 import { Button } from "../button";
-import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
+import { Pause, Play, RotateCcw, SkipBack, SkipForward } from "lucide-react";
 import { PomodoroCount } from "./pomodoro-count";
 import { ProgressBar } from "./progress-bar";
 
@@ -27,6 +28,13 @@ export const Timer = React.forwardRef<HTMLDivElement, TimerProps>(
     const longBreakMinutes = useLongBreakMinutes();
     const timerMode = useTimerMode();
     const pomodoroActions = usePomodoroActions();
+    const completedPomodoroCount = useCompletedPomodoroCount();
+    const isResetDisabled = useMemo(() => {
+      if (timerMode !== "pomodoro" || completedPomodoroCount > 0) {
+        return false;
+      }
+      return true;
+    }, [completedPomodoroCount, timerMode]);
 
     const { totalSeconds, didStart, isRunning, pause, resume, restart } =
       useTimer({
@@ -96,6 +104,12 @@ export const Timer = React.forwardRef<HTMLDivElement, TimerProps>(
       }
     }, [didStart, pomodoroActions, resetTimer]);
 
+    const handleReset = useCallback(() => {
+      if (!isResetDisabled) {
+        pomodoroActions.resetPomodoroCount();
+      }
+    }, [isResetDisabled, pomodoroActions]);
+
     return (
       <div
         className={cn(
@@ -133,6 +147,15 @@ export const Timer = React.forwardRef<HTMLDivElement, TimerProps>(
           </Button>
           <Button shape="square" variant="ghost" size="xl" onClick={handleNext}>
             <SkipForward className="h-8 w-8" />
+          </Button>
+        </div>
+        <div className="mt-4 flex w-full justify-center gap-4 border-border">
+          <Button
+            variant="ghost"
+            disabled={isResetDisabled}
+            onClick={handleReset}
+          >
+            <RotateCcw className="mr-1 h-5 w-5" /> Reset Pomodoros
           </Button>
         </div>
       </div>
