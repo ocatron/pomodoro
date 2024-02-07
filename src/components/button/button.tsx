@@ -27,8 +27,8 @@ const buttonVariants = cva(
       },
       shape: {
         default: "",
-        square: "px-0 py-0",
-        circle: "rounded-full px-0 py-0",
+        square: "flex-shrink-0 px-0 py-0",
+        circle: "flex-shrink-0 rounded-full px-0 py-0",
       },
     },
     compoundVariants: [
