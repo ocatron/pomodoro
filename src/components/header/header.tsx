@@ -1,5 +1,8 @@
 import logo from "@/assets/logo.svg";
 import { ModeToggle } from "../mode-toggle";
+import { Button } from "../button";
+import { Settings2 as SettingsIcon } from "lucide-react";
+import { Settings } from "../settings";
 
 export function Header() {
   return (
@@ -9,7 +12,12 @@ export function Header() {
           <img className="h-8 w-8" src={logo} />
           <span className="pl-1.5 text-lg font-semibold">Pomodoro</span>
         </div>
-        <div>
+        <div className="flex gap-4">
+          <Settings>
+            <Button variant="ghost" shape="square" size="sm">
+              <SettingsIcon className="h-5 w-5" />
+            </Button>
+          </Settings>
           <ModeToggle />
         </div>
       </div>
