@@ -40,23 +40,33 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       innerRef.current?.dispatchEvent(new Event("change", { bubbles: true }));
     }, []);
     return (
-      <div className="flex gap-2">
-        <Button variant="secondary" shape="square" onClick={handleStepDown}>
+      <div className="relative flex gap-2">
+        <Button
+          className="absolute"
+          variant="ghost"
+          shape="square"
+          onClick={handleStepDown}
+        >
           <Minus className="h-5 w-5" />
+        </Button>
+        <Button
+          className="absolute right-0"
+          variant="ghost"
+          shape="square"
+          onClick={handleStepUp}
+        >
+          <Plus className="h-5 w-5" />
         </Button>
         <Input
           type="number"
           className={cn(
-            "text-right [appearance:none] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+            "px-10 text-center [appearance:none] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
             className,
           )}
           value={String(value)}
           ref={innerRef}
           {...props}
         />
-        <Button variant="secondary" shape="square" onClick={handleStepUp}>
-          <Plus className="h-5 w-5" />
-        </Button>
       </div>
     );
   },
