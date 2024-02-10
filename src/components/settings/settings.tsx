@@ -23,6 +23,8 @@ interface SettingsProps {
   children: React.ReactNode;
 }
 
+const getPositiveNumberOrNaN = (value: number) => (value <= 0 ? 1 : value);
+
 function Settings({ children }: SettingsProps) {
   const pomodoroMinutes = usePomodoroMinutes();
   const shortBreakMinutes = useShortBreakMinutes();
@@ -30,36 +32,77 @@ function Settings({ children }: SettingsProps) {
   const longBreakInterval = useLongBreakInterval();
   const pomodoroActions = usePomodoroActions();
 
+  const [pomodoroMinutesInputValue, setPomodoroMinutesInputValue] =
+    useState(pomodoroMinutes);
+  const [shortBreakMinutesInputValue, setShortBreakMinutesInputValue] =
+    useState(shortBreakMinutes);
+  const [longBreakMinutesInputValue, setLongBreakMinutesInputValue] =
+    useState(longBreakMinutes);
+  const [longBreakIntervalInputValue, setLongBreakIntervalInputValue] =
+    useState(longBreakInterval);
+
+  const reInitialize = useCallback(() => {
+    setPomodoroMinutesInputValue(pomodoroMinutes);
+    setShortBreakMinutesInputValue(shortBreakMinutes);
+    setLongBreakMinutesInputValue(longBreakMinutes);
+    setLongBreakIntervalInputValue(longBreakInterval);
+  }, [longBreakInterval, longBreakMinutes, pomodoroMinutes, shortBreakMinutes]);
+
+  const handleOpenChange = useCallback(
+    (open: boolean) => {
+      if (open === true) {
+        reInitialize();
+      }
+    },
+    [reInitialize],
+  );
+
   const handleChangePomodoroMinutes = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      pomodoroActions.setPomodoroMinutes(parseInt(e.currentTarget.value));
+      const value = parseInt(e.currentTarget.value);
+      setPomodoroMinutesInputValue(getPositiveNumberOrNaN(value));
+      pomodoroActions.setPomodoroMinutes(value);
     },
     [pomodoroActions],
   );
 
   const handleChangeShortBreakMinutes = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      pomodoroActions.setShortBreakMinutes(parseInt(e.currentTarget.value));
+      const value = parseInt(e.currentTarget.value);
+      setShortBreakMinutesInputValue(getPositiveNumberOrNaN(value));
+      pomodoroActions.setShortBreakMinutes(value);
     },
     [pomodoroActions],
   );
 
   const handleChangeLongBreakMinutes = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      pomodoroActions.setLongBreakMinutes(parseInt(e.currentTarget.value));
+      const value = parseInt(e.currentTarget.value);
+      setLongBreakMinutesInputValue(getPositiveNumberOrNaN(value));
+      pomodoroActions.setLongBreakMinutes(value);
     },
     [pomodoroActions],
   );
 
   const handleChangeLongBreakInterval = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      pomodoroActions.setLongBreakInterval(parseInt(e.currentTarget.value));
+      const value = parseInt(e.currentTarget.value);
+      setLongBreakIntervalInputValue(getPositiveNumberOrNaN(value));
+      pomodoroActions.setLongBreakInterval(value);
     },
     [pomodoroActions],
   );
 
+  const handleReset = useCallback(() => {
+    const defaultState = pomodoroActions.resetToDefaultSettings();
+    setPomodoroMinutesInputValue(defaultState.pomodoroMinutes!);
+    setShortBreakMinutesInputValue(defaultState.shortBreakMinutes!);
+    setLongBreakMinutesInputValue(defaultState.longBreakMinutes!);
+    setLongBreakIntervalInputValue(defaultState.longBreakInterval!);
+  }, [pomodoroActions]);
+
   return (
-    <Drawer>
+    <Drawer onOpenChange={handleOpenChange}>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent className="max-h-full">
         <ScrollArea>
@@ -137,10 +180,7 @@ function Settings({ children }: SettingsProps) {
                     onChange={handleChangeLongBreakInterval}
                   />
                 </div>
-                <Button
-                  variant="secondary"
-                  onClick={pomodoroActions.resetToDefaultSettings}
-                >
+                <Button variant="secondary" onClick={handleReset}>
                   <RotateCcw className="mr-2 h-5 w-5" />
                   Reset
                 </Button>
