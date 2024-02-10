@@ -113,17 +113,30 @@ export const Timer = React.forwardRef<HTMLDivElement, TimerProps>(
     return (
       <div
         className={cn(
-          "flex flex-col items-center rounded-md border border-border p-4",
+          "flex flex-col items-center overflow-hidden rounded-md border border-border p-4",
           className,
         )}
         ref={ref}
         {...props}
       >
-        <Tabs value={timerMode} onValueChange={handleTimerModeChange}>
-          <TabsList>
-            <TabsTrigger value="pomodoro">Pomodoro</TabsTrigger>
-            <TabsTrigger value="short-break">Short Break</TabsTrigger>
-            <TabsTrigger value="long-break">Long Break</TabsTrigger>
+        <Tabs
+          value={timerMode}
+          onValueChange={handleTimerModeChange}
+          className="max-w-full overflow-hidden"
+        >
+          <TabsList className="w-full max-w-full">
+            <TabsTrigger value="pomodoro" aria-label="Pomodoro">
+              <span className="max-sm:hidden">Pomodoro</span>
+              <span className="sm:hidden">Pomo</span>
+            </TabsTrigger>
+            <TabsTrigger value="short-break" aria-label="Short break">
+              <span className="max-sm:hidden">Short Break</span>
+              <span className="sm:hidden">Short</span>
+            </TabsTrigger>
+            <TabsTrigger value="long-break" aria-label="Long break">
+              <span className="max-sm:hidden">Long Break</span>
+              <span className="sm:hidden">Long</span>
+            </TabsTrigger>
           </TabsList>
         </Tabs>
         <Countdown remainingSeconds={totalSeconds} className="mt-8" />
