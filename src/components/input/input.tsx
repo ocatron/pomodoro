@@ -28,7 +28,7 @@ export type NumberInputProps = Omit<InputProps, "type">;
 
 const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
   // eslint-disable-next-line react/prop-types
-  ({ className, ...props }, ref) => {
+  ({ className, value, ...props }, ref) => {
     const innerRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => innerRef.current!, []);
     const handleStepUp = React.useCallback(() => {
@@ -50,6 +50,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
             "text-right [appearance:none] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
             className,
           )}
+          value={String(value)}
           ref={innerRef}
           {...props}
         />
