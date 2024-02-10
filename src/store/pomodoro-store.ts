@@ -87,13 +87,24 @@ const usePomodoroStore = create<PomodoroState>()((set) => ({
       })),
     setMode: (mode: TimerMode) => set(() => ({ mode })),
     setPomodoroMinutes: (minutes) =>
-      set(() => ({ pomodoroMinutes: minutes <= 0 ? 1 : minutes })),
+      set(() => ({
+        pomodoroMinutes: minutes <= 0 ? 1 : minutes || DEFAULT_POMODORO_MINUTES,
+      })),
     setShortBreakMinutes: (minutes) =>
-      set(() => ({ shortBreakMinutes: minutes <= 0 ? 1 : minutes })),
+      set(() => ({
+        shortBreakMinutes:
+          minutes <= 0 ? 1 : minutes || DEFAULT_SHORT_BREAK_MINUTES,
+      })),
     setLongBreakMinutes: (minutes) =>
-      set(() => ({ longBreakMinutes: minutes <= 0 ? 1 : minutes })),
+      set(() => ({
+        longBreakMinutes:
+          minutes <= 0 ? 1 : minutes || DEFAULT_LONG_BREAK_MINUTES,
+      })),
     setLongBreakInterval: (pomodoros) =>
-      set(() => ({ longBreakInterval: pomodoros <= 0 ? 1 : pomodoros })),
+      set(() => ({
+        longBreakInterval:
+          pomodoros <= 0 ? 1 : pomodoros || DEFAULT_LONG_BREAK_INTERVAL,
+      })),
   },
 }));
 
