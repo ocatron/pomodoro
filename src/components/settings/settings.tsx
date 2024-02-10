@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Drawer,
   DrawerContent,
@@ -111,11 +111,11 @@ function Settings({ children }: SettingsProps) {
               <DrawerTitle>Settings</DrawerTitle>
             </DrawerHeader>
             <div className="p-4">
-              <div className="flex flex-col gap-8">
-                <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-col gap-8 [&>div]:flex [&>div]:max-sm:flex-col [&>div]:max-sm:gap-1">
+                <div>
                   <Label
                     htmlFor="pomodoro-minutes"
-                    className="flex flex-col gap-1"
+                    className="flex grow flex-col gap-1"
                   >
                     Pomodoro
                     <span className="text-sm text-muted-foreground">
@@ -124,15 +124,15 @@ function Settings({ children }: SettingsProps) {
                   </Label>
                   <NumberInput
                     id="pomodoro-minutes"
-                    className="max-w-[4rem]"
-                    value={pomodoroMinutes}
+                    className="sm:max-w-[8rem]"
+                    value={pomodoroMinutesInputValue}
                     onChange={handleChangePomodoroMinutes}
                   />
                 </div>
-                <div className="flex items-center justify-between gap-4">
+                <div>
                   <Label
                     htmlFor="short-break-minutes"
-                    className="flex flex-col gap-1"
+                    className="flex grow flex-col gap-1"
                   >
                     Short break
                     <span className="text-sm text-muted-foreground">
@@ -141,15 +141,15 @@ function Settings({ children }: SettingsProps) {
                   </Label>
                   <NumberInput
                     id="short-break-minutes"
-                    className="max-w-[4rem]"
-                    value={shortBreakMinutes}
+                    className="sm:max-w-[8rem]"
+                    value={shortBreakMinutesInputValue}
                     onChange={handleChangeShortBreakMinutes}
                   />
                 </div>
-                <div className="flex items-center justify-between gap-4">
+                <div>
                   <Label
                     htmlFor="long-break-minutes"
-                    className="flex flex-col gap-1"
+                    className="flex grow flex-col gap-1"
                   >
                     Long break
                     <span className="text-sm text-muted-foreground">
@@ -158,15 +158,15 @@ function Settings({ children }: SettingsProps) {
                   </Label>
                   <NumberInput
                     id="long-break-minutes"
-                    className="max-w-[4rem]"
-                    value={longBreakMinutes}
+                    className="sm:max-w-[8rem]"
+                    value={longBreakMinutesInputValue}
                     onChange={handleChangeLongBreakMinutes}
                   />
                 </div>
-                <div className="flex items-center justify-between gap-4">
+                <div>
                   <Label
                     htmlFor="long-break-interval"
-                    className="flex flex-col gap-1"
+                    className="flex grow flex-col gap-1"
                   >
                     Long Break Interval
                     <span className="text-sm text-muted-foreground">
@@ -175,8 +175,8 @@ function Settings({ children }: SettingsProps) {
                   </Label>
                   <NumberInput
                     id="long-break-interval"
-                    className="max-w-[4rem]"
-                    value={longBreakInterval}
+                    className="sm:max-w-[8rem]"
+                    value={longBreakIntervalInputValue}
                     onChange={handleChangeLongBreakInterval}
                   />
                 </div>
