@@ -19,7 +19,7 @@ export interface PomodoroState {
     next: () => void;
     previous: () => void;
     resetPomodoroCount: () => void;
-    resetToDefaultSettings: () => void;
+    resetToDefaultSettings: () => Partial<PomodoroState>;
     setMode: (mode: TimerMode) => void;
     setPomodoroMinutes: (minutes: number) => void;
     setShortBreakMinutes: (minutes: number) => void;
@@ -78,13 +78,16 @@ const usePomodoroStore = create<PomodoroState>()((set) => ({
       }),
     resetPomodoroCount: () =>
       set(() => ({ completedPomodoroCount: 0, mode: "pomodoro" })),
-    resetToDefaultSettings: () =>
-      set(() => ({
+    resetToDefaultSettings: () => {
+      const partial: Partial<PomodoroState> = {
         pomodoroMinutes: DEFAULT_POMODORO_MINUTES,
         shortBreakMinutes: DEFAULT_SHORT_BREAK_MINUTES,
         longBreakMinutes: DEFAULT_LONG_BREAK_MINUTES,
         longBreakInterval: DEFAULT_LONG_BREAK_INTERVAL,
-      })),
+      };
+      set(() => partial);
+      return partial;
+    },
     setMode: (mode: TimerMode) => set(() => ({ mode })),
     setPomodoroMinutes: (minutes) =>
       set(() => ({
